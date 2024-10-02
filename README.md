@@ -9,7 +9,14 @@ COMP0163 Blockchain Technologies Teaching Materials
 comp0163-blockchain-technologies/
 ├── data/               # Folder to store raw data    
 ├── data_scripts/       # Folder for Lab 1: Data Fetching
+│   ├── cryptocompare/      # Off-chain data fetching scripts
+│   ├── ethtools/           # On-chain data fetching via Ethereum Tools
+│   ├── bigql/              # On-chain data fetching via BigQuery
+│   └── thegraph/           # On-chain data fetching via TheGraph
 ├── environ/            # Folder to store utils
+│   ├── constants.py        # Constants such as path and API keys
+│   ├── data_fetcher.py     # Data fetching functions
+│   └── settings.py         # Project root path
 ├── .gitignore          # Git ignore file
 ├── LICENSE             # License file
 ├── README.md           # README file
