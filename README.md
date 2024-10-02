@@ -1,18 +1,26 @@
 # comp0163-blockchain-technologies
 COMP0163 Blockchain Technologies Teaching Materials
 
-[![python](https://img.shields.io/badge/Python-v3.11.2-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-<!-- [![build status](https://github.com/pre-commit/pre-commit/actions/workflows/main.yml/badge.svg)](https://github.com/xujiahuayz/pbs/actions/workflows/pylint.yml) -->
+[![python](https://img.shields.io/badge/Python-%3E%203.9.0-3776AB.svg?style=flat&logo=python&logoColor=white
+)](https://www.python.org)
 
+# Table of Contents
+
+- Lab 1: Data Fetching
+    - Introduction to the Lab, Blockchain, and Cryptocurrency.
+    - Traget of this lab (practice, technical foundation, and project management).
+    - Data fetching
+    - Why we need these data? (academic and industrial)
+    - API, web scraping, and develepment tools.
 # Structure
 ```
 comp0163-blockchain-technologies/
 ├── data/               # Folder to store raw data    
 ├── data_scripts/       # Folder for Lab 1: Data Fetching
-│   ├── cryptocompare/      # Off-chain data fetching scripts
-│   ├── ethtools/           # On-chain data fetching via Ethereum Tools
-│   ├── bigql/              # On-chain data fetching via BigQuery
-│   └── thegraph/           # On-chain data fetching via TheGraph
+│   ├── cryptocompare/      # Off-chain data (crypto price, volume, mcap) fetching scripts
+│   ├── ethtools/           # On-chain data (decentralized protocols) fetching via Ethereum Tools
+│   ├── bigql/              # On-chain data (bitcoin txn) fetching via BigQuery
+│   └── thegraph/           # On-chain data (decentralized protocols) fetching via TheGraph
 ├── environ/            # Folder to store utils
 │   ├── constants.py        # Constants such as path and API keys
 │   ├── data_fetcher.py     # Data fetching functions
