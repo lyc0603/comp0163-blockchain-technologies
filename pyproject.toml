@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
+
+[project]
+name = "mwe-data-scripts"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.9.15"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+"numpy==2.0.2", 
+"pandas==2.2.3", 
+"matplotlib==3.9.2",
+"requests==2.32.3",
+"web3==5.28.0",
+"ethereum-tools==0.1.6",
+"google-cloud-bigquery==3.26.0",
+]
+
+[project.optional-dependencies]
+dev = ["pylint", "black", "pytest"]
+
+[tool.black]
+line-length = 88
+target_version = ['py36']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         
+    | \.git          
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py       
+)
+'''

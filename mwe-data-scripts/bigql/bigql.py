@@ -7,7 +7,7 @@ import os
 from google.cloud import bigquery
 from pandas import json_normalize
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "YOUR_JSON_KEY_FILE.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "mwe-data-scripts/bigql/YOUR_JSON_KEY_FILE.json"
 client = bigquery.Client()
 
 # Perform a query.
@@ -28,4 +28,4 @@ btc_tx_value = [{
     field: row[field] for field in field_names
 } for row in rows]
 
-json_normalize(btc_tx_value)
+print(json_normalize(btc_tx_value))

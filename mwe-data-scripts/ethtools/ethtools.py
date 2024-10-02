@@ -5,14 +5,10 @@ Script to fetch data from the Ethereum blockchain using the eth-tools package
 import json
 from subprocess import PIPE, run
 
-INFURA_API_KEY = "5434aa4866964dc6afc026cac5e7e20a"
+INFURA_API_KEY = "YOUR_INFURA_API_KEY"
 infuraurl = f'https://mainnet.infura.io/v3/{INFURA_API_KEY}'
 
 rootcommand = 'eth-tools call-contract'
-
-
-
-# using https://github.com/danhper/ethereum-tools, run `pip install ethereum-tools` first
 
 
 def get_contract_output(
@@ -39,9 +35,9 @@ def get_contract_output(
 
 
 if __name__ == "__main__":
-    ABIDIR = 'ctoken.json'
-    cbatadd = '0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb'
+    ABIDIR = 'mwe-data-scripts/ethtools/abi.json'
+    address = '0xc3d688B66703497DAA19211EEdff47f25384cdc3'
 
-    ttlbrw = get_contract_output(
-        addr=cbatadd, func='totalBorrowsCurrent', abipath=ABIDIR)
-    print(ttlbrw)
+    on_chain_data = get_contract_output(
+        addr=address, func='getReserves', abipath=ABIDIR)
+    print(on_chain_data)

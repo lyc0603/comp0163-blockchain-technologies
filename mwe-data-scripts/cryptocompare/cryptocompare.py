@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 
 BASEURL = "https://min-api.cryptocompare.com/data/v2/histoday?"
-API_KEY = "2df694a5b77c832c21be894b46cbd1349822b688fa2f618310b900f643e51f80"
+API_KEY = "YOUR_API_KEY"
 
 
 def get_daily_pair_ohlcv(fsym: str, tsym: str = "USD", limit: int = 2000) -> dict:
