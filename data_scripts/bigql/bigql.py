@@ -6,8 +6,9 @@ import os
 
 from google.cloud import bigquery
 from pandas import json_normalize
+from environ.constants import DATA
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "mwe-data-scripts/bigql/YOUR_JSON_KEY_FILE.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f"{DATA}/bigquery.json"
 client = bigquery.Client()
 
 # Perform a query.

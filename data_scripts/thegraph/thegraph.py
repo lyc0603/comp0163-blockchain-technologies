@@ -42,6 +42,5 @@ data = {
     """
 }
 
-if __name__ == '__main__':
-  response = requests.post(url, headers=headers, json=data)
-  pprint(response.json())
+response = requests.post(url, headers=headers, json=data)
+pprint(response.json())
