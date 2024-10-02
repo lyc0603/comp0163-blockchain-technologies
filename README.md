@@ -4,6 +4,19 @@ COMP0163 Blockchain Technologies Teaching Materials
 [![python](https://img.shields.io/badge/Python-v3.11.2-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 <!-- [![build status](https://github.com/pre-commit/pre-commit/actions/workflows/main.yml/badge.svg)](https://github.com/xujiahuayz/pbs/actions/workflows/pylint.yml) -->
 
+# Structure
+```
+comp0163-blockchain-technologies/
+├── data/               # Folder to store raw data    
+├── data_scripts/       # Folder for Lab 1: Data Fetching
+├── environ/            # Folder to store utils
+├── .gitignore          # Git ignore file
+├── LICENSE             # License file
+├── README.md           # README file
+├── pyproject.toml      # Configuration file
+└── setup_repo.sh       # Setup script
+```
+
 # Setup
 ```zsh
 git clone https://github.com/lyc0603/comp0163-blockchain-technologies.git
