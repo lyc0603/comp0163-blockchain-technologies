@@ -1,17 +1,20 @@
 """
-Script to fetch data from the Ethereum blockchain using the eth-tools package
+Script to fetch data from the Ethereum blockchain using the web3 library
 """
 
-from environ.data_fetcher import get_contract_output
+from web3 import HTTPProvider, Web3
+
 from environ.constants import DATA, INFURA_API_KEY
+from environ.data_fetcher import FunctionCaller
 
-
-infuraurl = f'https://mainnet.infura.io/v3/{INFURA_API_KEY}'
+# connect to a remote node
+infuraurl = f"https://mainnet.infura.io/v3/{INFURA_API_KEY}"
+w3 = Web3(HTTPProvider(infuraurl))
 
 
 ABIDIR = f"{DATA}/abi.json"
-address = '0xc3d688B66703497DAA19211EEdff47f25384cdc3'
+address = "0xc3d688B66703497DAA19211EEdff47f25384cdc3"
 
-on_chain_data = get_contract_output(
-    addr=address, func='getReserves', abipath=ABIDIR, endpoint=infuraurl)
+contract = FunctionCaller(address, w3, ABIDIR)
+on_chain_data = contract.call_function("getReserves")
 print(on_chain_data)

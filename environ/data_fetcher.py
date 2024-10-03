@@ -2,9 +2,11 @@
 Functions for data fetching
 """
 
-import requests
 import json
-from subprocess import PIPE, run
+from typing import Any, Optional
+
+import requests
+from web3 import Web3
 
 
 def get_daily_pair_ohlcv(fsym: str, tsym: str, limit: int, api_key: str) -> dict:
@@ -30,26 +32,72 @@ def get_daily_pair_ohlcv(fsym: str, tsym: str, limit: int, api_key: str) -> dict
     # return the json response
     return requests.get(url, timeout=60).json()
 
-def get_contract_output(
-    addr: str, func: str, abipath: str, endpoint: str
-):
+
+class FunctionCaller:
     """
-    Function to call a contract function and return the output
-
-    Args:
-        addr (str): Address of the contract
-        func (str): Function to call
-        abipath (str): Path to the ABI file
-        endpoint (str): URL of the Ethereum node
-
-    Returns:
-        dict: Output of the contract function
+    Class to call functions from the smart contract
     """
-    rootcommand = 'eth-tools call-contract'
 
-    command = rootcommand + ' --abi ' + abipath + \
-        ' --web3-uri ' + endpoint + ' -f ' + func + ' ' + addr
-    print(command)
+    def __init__(self, contract_address: str, w3: Web3, abi_path: str):
+        self.contract_address = contract_address
+        self.w3 = w3
+        self.abi_path = abi_path
 
-    output = run(command, shell=True, stdout=PIPE).stdout
-    return json.loads(output)
+    def _load_abi(
+        self
+    ) -> dict:
+        """
+        Function to load the abi of the smart contract
+
+        Args:
+            path (str): The path to the abi file
+
+        Returns:    
+            dict: The abi of the smart contract
+        """
+
+        with open(self.abi_path, "r", encoding="utf-8") as f:
+            abi = json.load(f)
+
+        return abi
+
+    def _get_contract(
+        self
+    ) -> Any:
+        """
+        Function to get the contract object
+
+        Returns:
+            Any: The contract object
+        """
+        abi = self._load_abi()
+        contract = self.w3.eth.contract(address=self.contract_address, abi=abi)
+        return contract
+
+    def call_function(
+        self,
+        function_name: str,
+        block_identifier: int | str = "latest",
+        params: Optional[Any] = None,
+    ):
+        """
+        Function to call a function from the smart contract
+
+        Args:
+            function_name (str): The name of the function to call
+            block_identifier (int | str, optional): The block number or 
+                block hash to call the function at (default is 'latest').
+            params (Optional[Any], optional): The parameters to pass 
+                to the function (default is None).
+        
+        Returns:
+            Any: The return value of the function
+        """
+        contract = self._get_contract()
+        function = getattr(contract.functions, function_name)
+
+        return (
+            function().call(block_identifier=block_identifier)
+            if params is None
+            else function(*params).call(block_identifier=block_identifier)
+        )

@@ -20,9 +20,9 @@ dependencies = [
 "pandas==2.2.3", 
 "matplotlib==3.9.2",
 "requests==2.32.3",
-"web3==5.28.0",
+"web3==7.3.0",
 "ethereum-tools==0.1.6",
-"google-cloud-bigquery==3.26.0",
+"google-cloud-bigquery",
 ]
 
 [project.optional-dependencies]
