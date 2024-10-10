@@ -12,6 +12,9 @@ COMP0163 Blockchain Technologies Teaching Materials
     - Data fetching
     - Why we need these data? (academic and industrial)
     - API, web scraping, and develepment tools.
+- Lab 2: Bitcoin Testnet Transaction
+    - Crawl and monitor the evolution of the Ethereum repository in GitHub. (Fundamental, EVM, DeFi)
+    - Get pseudo Bitcoin and send transactions on the Bitcoin testnet
 # Structure
 ```
 comp0163-blockchain-technologies/
@@ -21,6 +24,8 @@ comp0163-blockchain-technologies/
 │   ├── eth_tools/           # On-chain data (decentralized protocols) fetching via web3 library
 │   ├── bigql/              # On-chain data (bitcoin txn) fetching via BigQuery
 │   └── thegraph/           # On-chain data (decentralized protocols) fetching via TheGraph
+├── test_btc/           # Folder for Lab 2: Bitcoin Testnet Transaction
+│   ├── TestBTC-2024.ipynb  # Jupyter notebook for Lab 2
 ├── environ/            # Folder to store utils
 │   ├── constants.py        # Constants such as path and API keys
 │   ├── data_fetcher.py     # Data fetching functions
