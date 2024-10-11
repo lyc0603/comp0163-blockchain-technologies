@@ -37,6 +37,7 @@ comp0163-blockchain-technologies/
 └── setup_repo.sh       # Setup script
 ```
 
+
 # Setup
 ```zsh
 git clone https://github.com/lyc0603/comp0163-blockchain-technologies.git
@@ -99,4 +100,10 @@ pip install -e ".[dev]"
 #### Install pre-commit
 ```bash
 pre-commit install
+```
+
+#### Update the code
+
+```bash
+git pull
 ```
