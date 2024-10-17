@@ -1,0 +1,67 @@
+module Cash where
+
+import Daml.Script
+
+template Cash 
+    with 
+        amount: Decimal
+        currency: Text
+        issuer: Party
+        holder: Party
+        regulator: Party
+
+    where  
+        signatory issuer
+        observer regulator
+        ensure(
+            amount>=0.0
+            )
+
+        controller holder can
+
+            Transfer: (ContractId Cash 
+                )
+                with
+                    newHolder: Party
+                do
+                    create this with
+                        holder=newHolder
+                        
+
+
+--scenario live in the sandbox and is an extension to the main daml
+cashTests: Script ()
+cashTests = script do
+ 
+boe <- allocateParty "Bank_of_England"
+regulator <- allocateParty "The_FCA"
+bank1 <- allocateParty "Bank1"
+bank2 <- allocateParty "Bank2"
+
+       
+boeCash <- submit boe do
+-- creates pointer to the contract that can be called back
+    createCmd Cash with
+        amount= 100.0
+        currency = "GBP"
+        holder = boe
+        issuer = boe
+        regulator
+
+--exercise a choice 
+transfer1 <-submit boe do
+    exerciseCmd boeCash Transfer with 
+        newHolder = bank1
+    
+boeCash2 <- submit boe do
+-- creates pointer to the contract that can be called back
+    createCmd Cash with
+        amount= 100.0
+        currency = "GBP"
+        holder = boe
+        issuer = boe
+        regulator      
+
+return ()
+
+             

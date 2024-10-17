@@ -1,0 +1,103 @@
+module Cash where
+import DataTypes
+import Daml.Script
+
+template Cash 
+    with 
+        amount: Decimal
+        currency: Currency
+        issuer: Party
+        holder: Party
+        regulator: Party
+        observers: [Party]  --extra observers added
+    where  
+        -- roles+view permissions
+        signatory issuer
+        --view only, no control or obligations
+        observer regulator, observers
+
+        ensure(
+            amount>=0.0
+            )
+
+        controller holder can
+            AddObserver: ( --add observer to contract
+                    ContractId Cash 
+                ) 
+                with
+                    newObserver: Party
+                do 
+                    create this with
+                        observers= newObserver :: observers -- :: append element to the end of the list
+            Transfer: (
+                ContractId Cash 
+                )
+                with
+                    newHolder: Party
+                do
+                    create this with
+                        holder=newHolder
+
+            Net: (
+                    ContractId Cash --what it is returning (single cash contract)
+                ) 
+                with   
+                     otherCash: [ContractId Cash] --passing a series of contracts
+                 do 
+                    let 
+                    
+                        sumCash
+                            (acc: Update(Decimal)) --define a function that takes a decimal and a list (extract value from the contract)
+                            (cash: ContractId Cash)
+                            =
+                            do
+                                total <- acc
+                                oc <- fetch cash
+
+                                assert( --verifies that currency, holder etc. are the same over the list of contract
+                                        oc.holder == holder
+                                        && oc.currency == currency
+                                        && oc.issuer == issuer
+                                        && oc.regulator ==regulator
+                                    )
+                                
+                                trans <- do
+                                    exercise cash Transfer with 
+                                        newHolder = issuer
+
+
+                                do 
+                                    exercise trans DeIssue
+
+                                return(total + oc.amount) 
+                    total <- foldl sumCash(return 0.0) otherCash --pass starting value and the list
+                    create this with 
+                        amount=(amount + total)
+            Split : (
+                    ContractId Cash, ContractId Cash
+                )
+                with    
+                    splitAmount: Decimal
+                    newHolder: Party
+                do
+                    assert(
+                            splitAmount<=amount
+                        )
+                    give <- create this with
+                        amount=splitAmount
+                        holder=newHolder
+
+                    keep <- create this with 
+                        amount=(amount-splitAmount)
+                
+                    return(give, keep)
+            
+        controller issuer can
+            DeIssue : () --no argument as we are archiving
+                do
+                    assert (
+                            holder == issuer
+                        )
+                    return()
+
+             

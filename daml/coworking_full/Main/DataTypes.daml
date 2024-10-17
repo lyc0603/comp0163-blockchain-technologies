@@ -1,0 +1,16 @@
+module DataTypes where
+
+--define a data type (can all be one data type at a time) 
+data Currency 
+        = GBP
+        | EUR
+        | USD
+        | JPY
+        | CHF
+    deriving (Eq, Show, Ord) --type class
+
+-- a numeric data types needs to have characteristics Eq: equality (compare elements of this data types)
+-- this data class allows operations 
+-- Ordered you can put them in a set (are ordered in a set an dyou can test again them)
+--Show when you printed 
+

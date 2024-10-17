@@ -1,0 +1,92 @@
+module CWspace where 
+import DataTypes 
+import Cash
+import Daml.Script
+
+
+template CWspace
+    with 
+        price: Decimal 
+        currency: Currency 
+        manager: Party 
+        tenant: Party
+        loc_aut: Party 
+        address: Text
+        tenancy_length: Decimal
+        square_meters: Decimal
+        description: Text
+
+    where
+     signatory manager
+     observer loc_aut
+
+     controller manager can 
+        UpdateListing: (
+            ContractId CWspace 
+            )
+            with
+                newTenant : Party
+                newPrice: Decimal
+                newtenancy_length : Decimal
+            do
+                create this with
+                    tenant=newTenant
+                    price=newPrice
+                    tenancy_length = newtenancy_length
+        
+        RemoveListing: ()
+            do 
+                assert(
+                    manager == tenant
+                     )
+                return()
+
+template CWspaceApplication
+    with
+        applicant: Party
+        manager: Party
+        loc_aut: Party
+        onemonth_rent: ContractId Cash
+        space: ContractId CWspace
+        tenancy_length: Decimal
+        notes: Text
+    where
+    signatory applicant
+    observer loc_aut
+      
+    controller manager can 
+        UpdateApplication: (ContractId CWspaceApplication)
+            with 
+                newnotes:Text
+            do create this with
+                    notes = newnotes
+
+        DenyRequest: ()
+            do
+                money<-fetch onemonth_rent
+                returnCash <- do 
+                    exercise onemonth_rent Transfer with
+                        newHolder = applicant
+                return()
+               
+        AcceptRequest: (
+                ContractId CWspace 
+            )
+            do  
+                cash <- fetch onemonth_rent
+                location <- fetch space
+                assert(
+                    cash.holder==manager
+                    &&cash.amount==location.price
+                    )
+                exercise onemonth_rent Split with 
+                    newHolder=loc_aut
+                    splitAmount= 8.0*cash.amount/100.0
+                exercise space UpdateListing with
+                    newTenant = applicant
+                    newPrice = cash.amount
+                    newtenancy_length = tenancy_length
+
+                
+                 
+                              

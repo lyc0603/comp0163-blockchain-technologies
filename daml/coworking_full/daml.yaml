@@ -1,0 +1,11 @@
+sdk-version: 1.15.0
+name: CoworkFULLnew
+source: Main
+init-script: CWtestnew:cWtest
+version: 0.0.1
+dependencies:
+  - daml-prim
+  - daml-stdlib
+  - daml-script
+sandbox-options:
+  - --wall-clock-time

@@ -1,0 +1,170 @@
+-- Model the coworking space listing and advertising
+-- e.g. business building for start-up in canry wharf
+
+module Main where
+-- Imports the Daml.Script library, which provides 
+-- functionality for writing and running DAML 
+-- scripts to test templates.
+import Daml.Script
+
+-- 1. Contract templates describe data that 
+-- will be stored on the ledger. Templates 
+-- determine who can read and write data; 
+-- and by whom and how this data can be altered.
+-- 2. Similar to the class in python (attributes/methods)
+-- Defines a DAML template called CWspace
+template CWspace
+    -- Contract Data in a format of data: datatype
+    with 
+        -- The price of the coworking space
+        price: Decimal 
+        -- The currency of the price
+        currency: Text 
+        -- The manager of the coworking space
+        manager: Party 
+        -- The current tenant of the coworking space
+        tenant: Party
+        -- The local authority overseeing the coworking space
+        loc_aut: Party 
+        -- The physical address of the coworking space
+        address: Text
+        -- The length of the tenancy agreement
+        tenancy_length: Decimal
+        -- The size of the coworking space in square meters
+        square_meters: Decimal
+        -- A description of the coworking space
+        description: Text
+
+    -- Assign roles to parties in a format of role party
+    where
+     -- The manager is the signatory of the contract, 
+     -- meaning they have the authority to create and 
+     -- authorize the contract.
+     signatory manager
+     -- The loc_aut (local authority) is an observer, 
+     -- meaning they can view the contract but don't have 
+     -- control over it.
+     observer loc_aut
+
+
+     -- This defines actions or "choices" the manager can 
+     -- make on the contract.
+     controller manager can 
+        -- Defines a choice to update the listing details 
+        -- of the coworking space. It returns a ContractId 
+        -- of type CWspace.
+        UpdateListing: (
+            ContractId CWspace 
+            )
+            with
+            -- Specifies the inputs required for this action:
+            -- Like functions / methods in Python
+                newTenant : Party
+                newPrice: Decimal
+                newtenancy_length : Decimal
+            do
+            -- This block defines what happens when this choice 
+            -- is exercised:
+                create this with
+                    tenant=newTenant
+                    price=newPrice
+                    tenancy_length = newtenancy_length
+        
+        RemoveListing: ()
+            -- Defines another choice that allows the manager 
+            -- to remove a listing.
+            do 
+            -- Ensures that only the manager who is also the 
+            -- current tenant can remove the listing.
+                assert(
+                    manager == tenant
+                     )
+                return()
+-- 1. Simulate the financial activities to avoid 
+-- severe financial consequence of errors
+-- 2. Similar to pytest in Python
+--Test functionalities of template
+cwTest : Script ()
+cwTest= script do
+-- create parties
+loc_aut <- allocateParty "Local_Authority" 
+cws1<- allocateParty "CoWorking_Space1"  
+cws2<- allocateParty "CoWorking_Space2" 
+st1<- allocateParty "Startup_1" 
+st2<- allocateParty "Startup_2"
+
+let 
+-- Define constants
+  currency = "GBP"
+  address1 = "Address_1"
+  address2 = "Address_2"
+  address3 = "Address_3"
+
+ -- Create CWSs listing
+ -- 1. The coworking space providers (cws1 and cws2) create listings for the 
+ --    spaces they manage.
+ -- 2. Use the syntax: tem_var <- submit party do
+ --                        createCmd contractName with
+ --                           attr_1 = ..
+ --                           attr_2 = ..
+cw1 <- submit cws1 do
+    createCmd CWspace with 
+        price = 2600.0 
+        currency
+        manager = cws1
+        tenant = cws1
+        loc_aut 
+        address=address1
+        tenancy_length = 6.0
+        square_meters= 30.0
+        description = "Private Office, 3 people"
+
+cw2 <- submit cws2 do
+    createCmd CWspace with 
+        price = 5000.0
+        currency
+        manager = cws2
+        tenant = cws2
+        loc_aut 
+        address=address2
+        tenancy_length = 12.0 
+        square_meters= 70.0
+        description = "10 x  desks"
+cw3 <- submit cws2 do
+    createCmd CWspace with 
+        price = 5000.0
+        currency
+        manager = cws2
+        tenant = cws2
+        loc_aut 
+        address=address3
+        tenancy_length = 12.0 
+        square_meters= 95.0
+        description = "2 x meeting rooms"
+
+-- implement choices
+-- Use the syntax: var <- submit party do
+--                     exericeCmd tem_var choice (with)
+--                           (attr_1 = ..)
+--                           (attr_2 = ..）             
+
+-- cws2 decides to remove Listing 3 (the one with the 
+-- meeting rooms at Address_3) from the platform. They 
+-- invoke the RemoveListing choice, which is allowed 
+-- only if the manager is also the tenant (in this case, 
+-- cws2 meets that condition).
+up1 <- submit cws2 do 
+    exerciseCmd cw3 RemoveListing
+
+
+-- The price is drastically reduced to £100/month, and 
+-- the tenancy length is shortened to 5 months. This 
+-- might reflect a special offer or a negotiation with 
+-- the new tenant (st2).
+up2 <- submit cws2 do 
+    exerciseCmd cw2 UpdateListing with
+        newTenant = st2
+        newPrice = 100.0
+        newtenancy_length = 5.0
+
+return()

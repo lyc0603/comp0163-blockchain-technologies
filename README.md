@@ -15,6 +15,11 @@ COMP0163 Blockchain Technologies Teaching Materials
 - Lab 2: Bitcoin Testnet Transaction
     - Crawl and monitor the evolution of the Ethereum repository in GitHub. (Fundamental, EVM, DeFi)
     - Get pseudo Bitcoin and send transactions on the Bitcoin testnet
+- Lab 3: Permissioned Blockchain
+    - Introduction to DAML
+    - DAML project for space listing
+    - DAML project for cash simple
+    - DAML project for coworking full
 # Structure
 ```
 comp0163-blockchain-technologies/
@@ -26,6 +31,10 @@ comp0163-blockchain-technologies/
 │   └── thegraph/           # On-chain data (decentralized protocols) fetching via TheGraph
 ├── test_btc/           # Folder for Lab 2: Bitcoin Testnet Transaction
 │   ├── TestBTC-2024.ipynb  # Jupyter notebook for Lab 2
+├── daml/               # Folder for Lab 3: Permissioned Blockchain
+│   ├── space_listing      # DAML project for space listing
+│   ├── cash_simple        # DAML project for cash simple
+│   ├── coworking_full    # DAML project for coworking full
 ├── environ/            # Folder to store utils
 │   ├── constants.py        # Constants such as path and API keys
 │   ├── data_fetcher.py     # Data fetching functions

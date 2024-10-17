@@ -1,0 +1,117 @@
+module CWtestnew where
+import Cash 
+import CWspace
+import DataTypes
+import Daml.Script
+
+cWtest: Script ()
+cWtest = script do 
+--Define parties 
+loc_aut <- allocateParty "Local_Authority" 
+cws1<- allocateParty "CoWorking_Space1"  
+cws2<- allocateParty "CoWorking_Space2" 
+st1<- allocateParty "Startup_1" 
+st2<- allocateParty "Startup_2"
+bk1 <- allocateParty "Bank_1"
+bk2 <- allocateParty "Bank_2" 
+reg <- allocateParty "Regulator"
+
+let 
+-- Define currency and address of CWSs
+    currency = GBP
+    address1 = "Address_1"
+    address2 = "Address_2"
+    address3 = "Address_3"
+
+--Create CWSs listing
+cw1 <- submit cws1 do
+    createCmd CWspace with 
+        price = 2600.0 
+        currency
+        manager = cws1
+        tenant = cws1
+        loc_aut 
+        address=address1
+        tenancy_length = 6.0
+        square_meters= 30.0
+        description = "Private Office, 3 people"
+cw2 <- submit cws2 do
+    createCmd CWspace with 
+        price = 5000.0
+        currency
+        manager = cws2
+        tenant = cws2
+        loc_aut 
+        address=address2
+        tenancy_length = 12.0 
+        square_meters= 70.0
+        description = "10 x hot desks"
+cw3 <- submit cws2 do
+    createCmd CWspace with 
+        price = 5000.0
+        currency
+        manager = cws2
+        tenant = cws2
+        loc_aut 
+        address=address3
+        tenancy_length = 12.0 
+        square_meters= 95.0
+        description = "2 x meeting rooms"
+-- -- -- -- -- Startups exchange fiat for tokens via banks and exchanges
+st1Cash <- submit bk1 do
+    createCmd Cash with 
+        amount= 70000.0
+        currency
+        holder = st1
+        issuer= bk1
+        regulator=reg
+        observers=[]    
+st2Cash <- submit bk2 do
+    createCmd Cash with 
+        amount= 100000.0
+        currency
+        holder = st2
+        issuer= bk2
+        regulator=reg
+        observers=[]
+-- -- --  -- st1 applies for cws1 and sends 1month rent       
+(onemonth1,st1Cash2) <- submit st1 do
+    exerciseCmd st1Cash Split with
+        newHolder = cws1
+        splitAmount= 2600.0
+st1App<- submit st1 do
+    createCmd CWspaceApplication with
+        applicant = st1
+        manager = cws1
+        loc_aut
+        onemonth_rent = onemonth1
+        space =  cw1
+        tenancy_length= 4.0
+        notes= "Shorter tenancy length, 4 month"
+--request denied and refund of deposit
+st1Tenancy<- submit cws1 do
+    exerciseCmd st1App UpdateApplication with
+        newnotes = "Application denied"
+st1TenancyDeny<-submit cws1 do
+        exerciseCmd st1Tenancy DenyRequest
+-- st2 applies for cws1 and sends 1 month rent       
+(onemonth2,st2Cash2) <- submit st2 do
+    exerciseCmd st2Cash Split with
+        newHolder = cws2
+        splitAmount= 5000.0
+st2App<- submit st2 do
+    createCmd CWspaceApplication with
+        applicant = st2
+        manager = cws2
+        loc_aut
+        onemonth_rent = onemonth2
+        space =  cw2
+        tenancy_length= 18.0
+        notes= "Longer tenancy, 18 month"
+--st2 application is accepted and listing is updated
+st2AppAccept <- submit cws2 do
+    exerciseCmd st2App AcceptRequest
+-- cws2 remove cw3 from the listing          
+cw2remove <- submit cws2 do 
+    exerciseCmd cw3 RemoveListing 
+return()
