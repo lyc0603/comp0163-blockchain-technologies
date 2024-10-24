@@ -20,6 +20,10 @@ COMP0163 Blockchain Technologies Teaching Materials
     - DAML project for space listing
     - DAML project for cash simple
     - DAML project for coworking full
+- Lab 4: Coding Smart Contracts in Solidity
+    - What is an ERC-20 token in Ethereum Blockchain?
+    - How to create, compile, and deploy smart contracts using Solidity on-chain?
+    - How to design functions for token transfers and delegated token transfers using Solidity
 # Structure
 ```
 comp0163-blockchain-technologies/
@@ -35,6 +39,8 @@ comp0163-blockchain-technologies/
 │   ├── space_listing      # DAML project for space listing
 │   ├── cash_simple        # DAML project for cash simple
 │   ├── coworking_full    # DAML project for coworking full
+├── my-token/           # Folder for Lab 4: Coding Smart Contracts in Solidity
+│   ├── MyToken.sol        # Solidity smart contract for ERC-20 token
 ├── environ/            # Folder to store utils
 │   ├── constants.py        # Constants such as path and API keys
 │   ├── data_fetcher.py     # Data fetching functions
