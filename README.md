@@ -24,6 +24,10 @@ COMP0163 Blockchain Technologies Teaching Materials
     - What is an ERC-20 token in Ethereum Blockchain?
     - How to create, compile, and deploy smart contracts using Solidity on-chain?
     - How to design functions for token transfers and delegated token transfers using Solidity
+- Lab 5: Automated Market Maker (AMM) in DeFi
+    - What is an Automated Market Maker (AMM)?
+    - How to design and implement an AMM using Solidity?
+    - How to deploy and interact with the AMM on-chain?
 # Structure
 ```
 comp0163-blockchain-technologies/
@@ -41,6 +45,10 @@ comp0163-blockchain-technologies/
 │   ├── coworking_full    # DAML project for coworking full
 ├── my-token/           # Folder for Lab 4: Coding Smart Contracts in Solidity
 │   ├── MyToken.sol        # Solidity smart contract for ERC-20 token
+├── amm/                # Folder for Lab 5: Automated Market Maker (AMM) in DeFi
+│   ├── CPAMM.sol          # Solidity smart contract for Constant Product AMM
+│   ├── ERC20.sol          # Solidity smart contract for ERC-20 token
+│   ├── IERC20.sol         # Solidity smart contract for ERC-20 token interface
 ├── environ/            # Folder to store utils
 │   ├── constants.py        # Constants such as path and API keys
 │   ├── data_fetcher.py     # Data fetching functions
