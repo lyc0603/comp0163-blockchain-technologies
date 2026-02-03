@@ -67,6 +67,10 @@ git clone https://github.com/lyc0603/comp0163-blockchain-technologies.git
 cd comp0163-blockchain-technologies
 ```
 
+```zsh
+git pull
+```
+
 ### Give execute permission to your script and then run `setup_repo.sh`
 
 - MacOS / Linux

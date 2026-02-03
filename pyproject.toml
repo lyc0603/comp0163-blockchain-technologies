@@ -16,10 +16,10 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dependencies = [
-"numpy==2.0.2", 
-"pandas==2.2.3", 
-"matplotlib==3.9.2",
-"requests==2.32.3",
+"numpy", 
+"pandas", 
+"matplotlib",
+"requests",
 "web3==7.3.0",
 "ethereum-tools==0.1.6",
 "google-cloud-bigquery",
