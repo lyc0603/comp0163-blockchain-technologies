@@ -33,7 +33,7 @@ COMP0163 Blockchain Technologies Teaching Materials
 comp0163-blockchain-technologies/
 ├── data/               # Folder to store raw data    
 ├── data_scripts/       # Folder for Lab 1: Data Fetching
-│   ├── cryptocompare/      # Off-chain data (crypto price, volume, mcap) fetching scripts
+│   ├── coinbase/           # Coinbase Exchange daily OHLCV tutorial
 │   ├── eth_tools/           # On-chain data (decentralized protocols) fetching via web3 library
 │   ├── bigql/              # On-chain data (bitcoin txn) fetching via BigQuery
 │   └── thegraph/           # On-chain data (decentralized protocols) fetching via TheGraph
