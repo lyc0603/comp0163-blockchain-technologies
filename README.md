@@ -134,3 +134,16 @@ pre-commit install
 ```bash
 git pull
 ```
+
+
+### DAML
+
+You can use Github Codespace for DAML. run the following commands:
+```bash
+curl -sSL https://get.daml.com/ | sh -s 1.15.0
+export PATH="$HOME/.daml/bin:$PATH"
+```
+and then
+```bash
+daml start
+```
